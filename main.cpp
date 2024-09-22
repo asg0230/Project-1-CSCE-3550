@@ -8,33 +8,33 @@
 // Converts a BIGNUM to a raw string.
 std::string bignum_to_raw_string(const BIGNUM *bn)
 {
-    int bn_size = BN_num_bytes(bn);
-    std::string raw(bn_size, 0);
-    BN_bn2bin(bn, reinterpret_cast<unsigned char *>(&raw[0]));
+    int bn_size = BN_num_bytes(bn); // Determining the byte size of BIGNUM.
+    std::string raw(bn_size, 0);    // Creating a string to store BIGNUM bytes.
+    BN_bn2bin(bn, reinterpret_cast<unsigned char *>(&raw[0])); // Convert BIGNUM to binary and store in raw string.
     return raw;
 }
 
 // Extracts the public key from an EVP_PKEY and returns it as a string.
 std::string extract_pub_key(EVP_PKEY *pkey)
 {
-    BIO *bio = BIO_new(BIO_s_mem());
-    PEM_write_bio_PUBKEY(bio, pkey);
+    BIO *bio = BIO_new(BIO_s_mem());   // Creating a new memory BIO.
+    PEM_write_bio_PUBKEY(bio, pkey);   // Write the public key to the BIO.
     char *data = NULL;
-    long len = BIO_get_mem_data(bio, &data);
-    std::string result(data, len);
-    BIO_free(bio);
+    long len = BIO_get_mem_data(bio, &data); // Retrieving data from BIO.
+    std::string result(data, len);           // Creating a string from the BIO data.
+    BIO_free(bio);                           // Free BIO resources.
     return result;
 }
 
 // Extracts the private key from an EVP_PKEY and returns it as a string.
 std::string extract_priv_key(EVP_PKEY *pkey)
 {
-    BIO *bio = BIO_new(BIO_s_mem());
-    PEM_write_bio_PrivateKey(bio, pkey, NULL, NULL, 0, NULL, NULL);
+    BIO *bio = BIO_new(BIO_s_mem());          // Creating a new memory BIO.
+    PEM_write_bio_PrivateKey(bio, pkey, NULL, NULL, 0, NULL, NULL); // Write the private key to the BIO.
     char *data = NULL;
-    long len = BIO_get_mem_data(bio, &data);
-    std::string result(data, len);
-    BIO_free(bio);
+    long len = BIO_get_mem_data(bio, &data);  // Retrieving data from BIO.
+    std::string result(data, len);            // Creating a string from the BIO data.
+    BIO_free(bio);                            // Free BIO resources.
     return result;
 }
 
@@ -194,3 +194,4 @@ int main()
 
     return 0;
 }
+
